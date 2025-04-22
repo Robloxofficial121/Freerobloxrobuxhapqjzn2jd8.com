@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Устройство заблокировано</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      color: red;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      user-select: none;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 3em;
+    }
+    #timer {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ваше устройство будет заблокировано</h1>
+  <div id="timer">Осталось: 30 секунд</div>
+
+  <script>
+    let timeLeft = 30;
+    const timer = document.getElementById('timer');
+
+    setInterval(() => {
+      timeLeft--;
+      timer.textContent = `Осталось: ${timeLeft} секунд`;
+      if (timeLeft <= 0) {
+        timer.textContent = "Устройство заблокировано!";
+        document.body.style.background = "darkred";
+      }
+    }, 1000);
+
+    // Имитация "блокировки" действий
+    document.addEventListener('keydown', e => e.preventDefault());
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('wheel', e => e.preventDefault());
+    document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+  </script>
+</body>
+</html>
