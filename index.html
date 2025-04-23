@@ -2,29 +2,34 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>⚠ Устройство заблокировано ⚠</title>
+  <title>Устройство заблокировано</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      background-color: black;
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
       color: red;
       font-family: monospace;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
-      padding: 50px;
-      overflow: hidden;
     }
     h1 {
-      font-size: 3em;
+      font-size: 2.5em;
       animation: blink 1s infinite;
     }
     p {
-      font-size: 1.5em;
-    }
-    #exit {
-      display: none;
-      margin-top: 30px;
-      padding: 10px 20px;
       font-size: 1.2em;
-      background: red;
+    }
+    #start {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1em;
+      background: darkred;
       color: white;
       border: none;
       border-radius: 8px;
@@ -32,35 +37,41 @@
     }
     @keyframes blink {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+      50% { opacity: 0.4; }
     }
   </style>
 </head>
 <body>
-  <h1>УСТРОЙСТВО ЗАБЛОКИРОВАНО</h1>
-  <p id="message">Ошибка: 0xGHBLOCKED<br>Обратитесь к системному администратору.</p>
-  <button id="exit">Ладно, выйди</button>
+  <h1>⚠ Доступ ограничен ⚠</h1>
+  <p>Нажмите для проверки устройства</p>
+  <button id="start">Начать</button>
 
-  <audio id="creepy" autoplay loop>
+  <audio id="creepy" loop>
     <source src="https://www.myinstants.com/media/sounds/warning.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    // Блокировка действий
-    document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
-    document.addEventListener("contextmenu", e => e.preventDefault());
+    const btn = document.getElementById('start');
+    const creepySound = document.getElementById('creepy');
 
-    // Подмена текста и показ кнопки
-    setTimeout(() => {
-      document.getElementById('message').textContent = 'А Я ТЕБЯ ОБМАНУЛ! НУ ЧТО, ОБОСАЛСЯ?';
-      document.getElementById('exit').style.display = 'inline-block';
-    }, 10000); // через 10 сек
+    btn.onclick = () => {
+      creepySound.play();
 
-    // Кнопка "выйти"
-    document.getElementById('exit').onclick = () => {
-      document.body.innerHTML = '<h1 style="color:white">Слишком поздно. Ты уже заражён.</h1>';
-      document.body.style.background = 'black';
+      document.body.innerHTML = `
+        <h1>УСТРОЙСТВО ЗАБЛОКИРОВАНО</h1>
+        <p>Вы не сможете покинуть эту страницу</p>
+      `;
+
+      // Отключение прокрутки и контекстного меню
+      document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+      document.addEventListener("contextmenu", e => e.preventDefault());
+
+      // Запросить "почти полный экран"
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
     };
   </script>
 </body>
 </html>
+
