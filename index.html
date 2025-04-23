@@ -1,54 +1,47 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Устройство заблокировано</title>
-  <style>
-    body {
-      margin: 0;
-      background: black;
-      color: red;
-      font-family: monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-      user-select: none;
-      overflow: hidden;
-    }
-    h1 {
-      font-size: 3em;
-    }
-    #timer {
-      font-size: 2em;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Ваше устройство будет заблокировано</h1>
-  <div id="timer">Осталось: 30 секунд</div>
+// усиление громкости смеха
+        if (creepy.volume + volumeStep <= 1) {
+          creepy.volume += volumeStep;
+        }
 
-  <script>
-    let timeLeft = 30;
-    const timer = document.getElementById('timer');
+        // Следующая фраза
+        if (timeLeft === 15) {
+          stuck.play();
+        }
 
-    setInterval(() => {
-      timeLeft--;
-      timer.textContent = `Осталось: ${timeLeft} секунд`;
-      if (timeLeft <= 0) {
-        timer.textContent = "Устройство заблокировано!";
-        document.body.style.background = "darkred";
-      }
-    }, 1000);
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          creepy.pause();
+          funny.play();
 
-    // Имитация "блокировки" действий
-    document.addEventListener('keydown', e => e.preventDefault());
-    document.addEventListener('contextmenu', e => e.preventDefault());
-    document.addEventListener('wheel', e => e.preventDefault());
-    document.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+          timeUp.play(); // Проигрываем фразу, когда время на 0
+
+          // Добавляем эффект "треска" экрана
+          const crackEffect = document.createElement('div');
+          crackEffect.classList.add('crack');
+          document.body.appendChild(crackEffect);
+
+          // Взрывный звук
+          explosionSound.play();
+
+          timer.style.transform = scale(1);
+          timer.style.fontSize = '2em';
+          timer.style.color = 'white';
+          timer.textContent = "А Я ТЕБЯ ОБМАНУЛ. НУ ЧТО, ОБОСАЛСЯ?";
+          exitBtn.style.display = "inline-block";
+          exitBtn.textContent = "Ладно, выйди";
+        }
+      }, 1000);
+    };
+
+    exitBtn.onclick = () => {
+      funny.pause();
+      funny.currentTime = 0;
+      document.body.innerHTML = "<h1 style='color:white;'>Ты выжил, ха-ха!</h1>";
+    };
+
+    // Блокировка тач-жестов
+    document.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+    document.addEventListener("contextmenu", e => e.preventDefault());
   </script>
 </body>
 </html>
